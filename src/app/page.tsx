@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { Cohort } from "@nucypher/nucypher-ts";
 
 export default function Home() {
   const [plaintext, setPlaintext] = useState("");
@@ -8,10 +9,18 @@ export default function Home() {
   const [decrypted, setDecrypted] = useState("");
   const [status, setStatus] = useState("waiting");
 
-  const handleEncrypt = (event: FormEvent<HTMLFormElement>) => {
+  const handleEncrypt = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("encrypting");
+    const config = {
+      threshold: 3,
+      shares: 5,
+      porterUri: "https://porter-tapir.nucypher.community",
+    };
+
+    const newCohort = await Cohort.create(config);
     // TODO: encrypt the plaintext
+
     setTimeout(() => {
       setStatus("encrypted");
     }, 1500);
